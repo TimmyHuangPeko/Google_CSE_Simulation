@@ -202,8 +202,9 @@ def login():
 
     # to-do: cryptographic protection on communication between file server and kms
     kms_response = requests.post(
-        "http://localhost:8081/jwt",
-        json={"jwt": token if isinstance(token, str) else token.decode()}
+        "https://localhost:8081/jwt",
+        json={"jwt": token if isinstance(token, str) else token.decode()},
+        verify=False
     )
     if kms_response.status_code != 200:
         return jsonify({"status": "error", "message": "Failed to send JWT to KMS"}), 500
@@ -377,8 +378,9 @@ def share():
 
     # Told KMS to update KEK access control list
     kms_response = requests.post(
-        "http://localhost:8081/update_acl",
-        json={"file_id": file_id, "username": share_with}
+        "https://localhost:8081/update_acl",
+        json={"file_id": file_id, "username": share_with},
+        verify=False
     )
     if(kms_response.status_code != 200):
         return jsonify({"status": "error", "message": "Failed to update ACL"}), 500
@@ -386,9 +388,9 @@ def share():
     return jsonify({"status": "success", "message": f"File '{filename[:-4]}' shared with {share_with}!"})
 
 if (__name__ == "__main__"):
-    
-    app.run(host="0.0.0.0", port=8080)
-    print("Server started on port 8080")
+    context = ('./server/127.0.0.1+2.pem', './server/127.0.0.1+2-key.pem') 
+    app.run(host="0.0.0.0", port=8080, ssl_context=context)
+    print("Server started on port 8080 with HTTPS")
 
 
 # add directory

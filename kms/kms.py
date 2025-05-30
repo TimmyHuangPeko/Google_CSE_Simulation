@@ -231,5 +231,6 @@ def update_acl():
 
 if (__name__ == "__main__"):
     
-    app.run(host="0.0.0.0", port=8081)
-    print("Server started on port 8081")
+    context = ('./server/127.0.0.1+2.pem', './server/127.0.0.1+2-key.pem') 
+    app.run(host="0.0.0.0", port=8081, ssl_context=context)
+    print("KMS Server started on port 8081 with HTTPS")

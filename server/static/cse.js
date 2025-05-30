@@ -1,5 +1,6 @@
 
-KMS_ADDRESS = "http://localhost:8081/";
+const KEK_SERVER_PORT = "8081"; 
+const KMS_ADDRESS = `https://${window.location.hostname}:${KEK_SERVER_PORT}/`;
 
 
 window.onload = async function() {
